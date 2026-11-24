@@ -3,7 +3,7 @@ package ro.uvt.info.designpatternslab2026;
 public class Author {
     final String name;
     final String surname;
-    public Author(String name, String surname) {
+    public  Author(String name, String surname) {
         this.name = name;
         this.surname = surname;
     }
