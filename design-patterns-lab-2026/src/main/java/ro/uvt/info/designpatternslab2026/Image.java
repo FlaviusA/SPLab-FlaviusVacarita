@@ -1,10 +1,22 @@
 package ro.uvt.info.designpatternslab2026;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
+
 import java.util.concurrent.TimeUnit;
 
-public class Image implements Element,Picture{
-    String imageName;
-    private final Dimension dim;
+@Entity
+public class Image extends BaseElement implements Picture {
+    private String imageName;
+
+    @Embedded
+    private Dimension dim;
+
+    @Transient
     private final ImageContent content = new ImageContent();
+
+    protected Image() {
+    }
 
     public Image(String imageName) {
         this(imageName, null);
@@ -20,9 +32,17 @@ public class Image implements Element,Picture{
             e.printStackTrace();
         }
     }
-    @Override
-    public void print() {
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void render() {
         System.out.println("Image with name:" + imageName);
+    }
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
     @Override
     public String url() {

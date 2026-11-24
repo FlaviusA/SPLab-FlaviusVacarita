@@ -2,11 +2,24 @@ package ro.uvt.info.designpatternslab2026;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class DesignPatternsLab2026Application {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String Purple="\u001B[35m";
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**");
+            }
+        };
+    }
+
     public static void main(String[] args) throws Exception {
         SpringApplication.run(DesignPatternsLab2026Application.class, args);
         long startTime = System.currentTimeMillis();
@@ -25,13 +38,13 @@ public class DesignPatternsLab2026Application {
         System.out.println("Creation of the content took " + (endTime - startTime) + " milliseconds");
 
         startTime = System.currentTimeMillis();
-        playboyS1.print();
+        playboyS1.accept(new RenderContentVisitor());
         endTime = System.currentTimeMillis();
 
         System.out.println("Printing of the section 1 took " + (endTime - startTime) + " milliseconds");
 
         startTime = System.currentTimeMillis();
-        playboyS1.print();
+        playboyS1.accept(new RenderContentVisitor());
         endTime = System.currentTimeMillis();
 
         System.out.println("Printing again the section 1 took " + (endTime - startTime) + " milliseconds");

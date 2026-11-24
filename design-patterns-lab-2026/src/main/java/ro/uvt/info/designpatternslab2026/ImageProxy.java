@@ -1,9 +1,22 @@
 package ro.uvt.info.designpatternslab2026;
 
-public class ImageProxy implements Element, Picture {
-    String url;
-    Dimension dim;
-    Image realImg=null;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
+
+@Entity
+public class ImageProxy extends BaseElement implements Picture {
+    private String url;
+
+    @Embedded
+    private Dimension dim;
+
+    @Transient
+    private Image realImg = null;
+
+    protected ImageProxy() {
+    }
+
     public ImageProxy(String url) {
         this.url = url;
     }
@@ -17,9 +30,17 @@ public class ImageProxy implements Element, Picture {
         }
         return realImg;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void render() {
+        loadImage().render();
+    }
     @Override
-    public void print() {
-        loadImage().print();
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
     @Override
     public String url()
